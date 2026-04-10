@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математический Биатлон</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="menu-screen" class="screen active">
+        
+        <!-- Верхние кнопки -->
+        <button class="btn btn-top-left" id="btn-help">СПРАВКА</button>
+        <button class="btn btn-top-right" id="btn-settings">НАСТРОЙКИ</button>
+
+        <!-- Контейнер с кнопками в центре снизу -->
+        <div class="bottom-buttons">
+            <button class="btn btn-start" id="btn-start">СТАРТ</button>
+            <button class="btn btn-exit" id="btn-exit">ВЫХОД</button>
+        </div>
+
+        <!-- Нижняя панель -->
+        <div class="footer-bar">
+            <span class="footer-left">Разработано Маловой К. В.</span>
+            <span class="footer-right">© 2026, Межрегиональный центр компетенций — ЧЭМК</span>
+        </div>
+
+    </div>
+
+    <!-- Модальное окно СПРАВКА -->
+    <div id="modal-info" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title">Как играть?</h2>
+            
+            <div class="modal-text">
+                <p>Управляй лыжником, добеги до финиша, решай задачи на огневых рубежах.</p>
+                <p>На рубеже: выбери правильный ответ и нажми на мишень или клавишу 1–4.</p>
+                <p>При ошибке — штрафной круг (3–5 задач).<br>
+                Горячие клавиши: 1–4 — выбор мишени, Пробел — выстрел, R — рестарт, Esc — пауза/меню.</p>
+            </div>
+
+            <button id="btn-close-info" class="btn-modal-close">Понял</button>
+        </div>
+    </div>
+
+<!-- Модальное окно НАСТРОЙКИ -->
+<div id="modal-settings" class="modal-overlay hidden">
+    <div class="modal-content">
+        <h2 class="modal-title">Настройки</h2>
+        
+        <div class="settings-layout">
+            <div class="settings-left">
+                <!-- ЗВУК -->
+                <div class="setting-row">
+                    <div id="toggle-sound" class="custom-toggle">
+                        <div class="toggle-green"></div>
+                        <div class="toggle-red"></div>
+                    </div>
+                    <span class="setting-label">Звук</span>
+                </div>
+
+                <!-- МУЗЫКА -->
+                <div class="setting-row">
+                    <div id="toggle-music" class="custom-toggle">
+                        <div class="toggle-green"></div>
+                        <div class="toggle-red"></div>
+                    </div>
+                    <span class="setting-label">Музыка</span>
+                </div>
+
+                <!-- СКОРОСТЬ ТРАССЫ -->
+                <div class="setting-row">
+                    <div id="toggle-speed" class="custom-toggle">
+                        <div class="toggle-green"></div>
+                        <div class="toggle-red"></div>
+                    </div>
+                    <span class="setting-label">Скорость трассы</span>
+                </div>
+            </div>
+
+            <div class="settings-right">
+                <span class="setting-label">Выбор сложности</span>
+                <div id="difficulty-bar" class="difficulty-bar"></div>
+                <span id="difficulty-text" class="difficulty-text">СРЕДНЯЯ</span>
+            </div>
+        </div>
+
+        <button id="btn-close-settings" class="btn-modal-close">Отлично</button>
+    </div>
+</div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
