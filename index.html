@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математический Биатлон</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="menu-screen" class="screen active">
+        
+        <!-- Верхние кнопки -->
+        <button class="btn btn-top-left" id="btn-help">СПРАВКА</button>
+        <button class="btn btn-top-right" id="btn-settings">НАСТРОЙКИ</button>
+
+        <!-- Контейнер с кнопками в центре снизу -->
+        <div class="bottom-buttons">
+            <button class="btn btn-start" id="btn-start">СТАРТ</button>
+            <button class="btn btn-exit" id="btn-exit">ВЫХОД</button>
+        </div>
+
+        <!-- Нижняя панель -->
+        <div class="footer-bar">
+            <span class="footer-left">Разработано Маловой К. В.</span>
+            <span class="footer-right">© 2026, Межрегиональный центр компетенций — ЧЭМК</span>
+        </div>
+
+    </div>
+
+    <!-- Модальное окно СПРАВКА -->
+    <div id="modal-info" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title">📘 Как играть?</h2>
+            
+            <div class="modal-text">
+                <p><strong>🏁 Цель:</strong> Пробежать трассу, состоящую из огневых рубежей, правильно решая математические задачи. Каждый правильный ответ — 10 очков, ошибка отнимает 5 очков и добавляет штрафной круг.</p>
+                
+                <p><strong>🎚️ Режимы сложности (выбираются в настройках):</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li><span style="color:#00cc66;">🟢 Лёгкий</span> — арифметика: сложение, вычитание, умножение, деление.</li>
+                    <li><span style="color:#ffcc00;">🟡 Средний</span> — производные элементарных функций.</li>
+                    <li><span style="color:#ff3300;">🔴 Сложный</span> — неопределённые интегралы.</li>
+                </ul>
+                
+                <p><strong>📈 Прогрессия сложности:</strong> Внутри каждого режима задачи постепенно усложняются. Вы можете задать шаг усложнения в настройках («Усложнять каждые N рубежей»). Чем дальше вы продвигаетесь, тем труднее становятся примеры!</p>
+                
+                <p><strong>⚙️ Дополнительные настройки:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>🔢 <strong>Количество рубежей</strong> — сколько раз нужно остановиться для стрельбы.</li>
+                    <li>⏱️ <strong>Лимит времени</strong> — если не уложитесь, игра закончится поражением.</li>
+                    <li>⏳ <strong>Интервал до рубежа</strong> — сколько секунд бега между остановками.</li>
+                </ul>
+                
+                <p><strong>🎯 На огневом рубеже:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Выберите правильный ответ из четырёх вариантов.</li>
+                    <li>Кликните мышью по мишени или нажмите клавишу <kbd>1</kbd>–<kbd>4</kbd> на клавиатуре.</li>
+                    <li>При промахе назначается <strong>штрафной круг</strong> — нужно решить 3 дополнительные арифметические задачи.</li>
+                </ul>
+                
+                <p><strong>⌨️ Горячие клавиши:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 10px;">
+                    <li><kbd>1</kbd>–<kbd>4</kbd> — выбор ответа на рубеже</li>
+                    <li><kbd>R</kbd> — перезапуск игры (сброс прогресса)</li>
+                    <li><kbd>Esc</kbd> — выход из игры (закрыть окно)</li>
+                </ul>
+                
+                <p>💡 <em>Совет:</em> На сложном режиме в правом верхнем углу отображается шпаргалка с основными формулами!</p>
+            </div>
+
+            <button id="btn-close-info" class="btn-modal-close">Понятно</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно НАСТРОЙКИ -->
+    <div id="modal-settings" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title">Настройки</h2>
+            
+            <div class="settings-layout">
+                <div class="settings-left">
+                    <!-- ЗВУК -->
+                    <div class="setting-row">
+                        <div id="toggle-sound" class="custom-toggle">
+                            <div class="toggle-green"></div>
+                            <div class="toggle-red"></div>
+                        </div>
+                        <span class="setting-label">Звук</span>
+                    </div>
+
+                    <!-- МУЗЫКА -->
+                    <div class="setting-row">
+                        <div id="toggle-music" class="custom-toggle">
+                            <div class="toggle-green"></div>
+                            <div class="toggle-red"></div>
+                        </div>
+                        <span class="setting-label">Музыка</span>
+                    </div>
+
+                    <!-- СКОРОСТЬ ТРАССЫ -->
+                    <div class="setting-row">
+                        <div id="toggle-speed" class="custom-toggle">
+                            <div class="toggle-green"></div>
+                            <div class="toggle-red"></div>
+                        </div>
+                        <span class="setting-label">Скорость трассы</span>
+                    </div>
+                </div>
+
+                <div class="settings-right">
+                    <span class="setting-label">Выбор сложности</span>
+                    <div id="difficulty-bar" class="difficulty-bar"></div>
+                    <span id="difficulty-text" class="difficulty-text">СРЕДНЯЯ</span>
+                    
+                    <!-- НОВЫЕ НАСТРОЙКИ -->
+                    <div class="advanced-settings">
+                        <div class="setting-row">
+                            <label for="laps-count" class="setting-label">Количество рубежей:</label>
+                            <input type="number" id="laps-count" min="3" max="100" value="5" step="1" class="number-input">
+                        </div>
+                        <div class="setting-row">
+                            <label for="time-limit" class="setting-label">Лимит времени (сек):</label>
+                            <input type="number" id="time-limit" min="30" max="3600" value="120" step="20" class="number-input">
+                        </div>
+                        <div class="setting-row">
+                            <label for="lap-interval" class="setting-label">Интервал до рубежа (сек):</label>
+                            <input type="number" id="lap-interval" min="2" max="600" value="5" step="1" class="number-input">
+                        </div>
+                        <div class="setting-row">
+                            <label for="difficulty-step" class="setting-label">Усложнять каждые:</label>
+                            <input type="number" id="difficulty-step" min="1" max="10" value="2" step="1" class="number-input">
+                            <span style="margin-left: 5px;">рубежей</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="btn-close-settings" class="btn-modal-close">Отлично</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

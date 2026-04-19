@@ -1,0 +1,418 @@
+/* Обнуляем стандартные отступы браузера */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+}
+
+/* Экран меню */
+#menu-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/images/logo.png') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Затемнение для читаемости текста */
+#menu-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+/* Базовый стиль для всех кнопок — ПРОЗРАЧНЫЙ ФОН */
+.btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 12px 30px;
+    border: 2px solid white;
+    border-radius: 40px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+/* Эффект при наведении */
+.btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Кнопка СПРАВКА (верхний левый угол) */
+.btn-top-left {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    border-color: #ff66aa;
+    color: #ff66aa;
+}
+.btn-top-left:hover {
+    background: rgba(255, 102, 170, 0.3);
+}
+
+/* Кнопка НАСТРОЙКИ (верхний правый угол) */
+.btn-top-right {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+.btn-top-right:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Центральный контент (заголовок) */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    margin-bottom: 80px; /* Отступ от низа, чтобы кнопки не сливались */
+}
+
+/* Скрываем старую картинку-логотип */
+.logo-img {
+    display: none;
+}
+
+/* Главный заголовок */
+.main-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 70px;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 
+        0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(0, 150, 255, 0.5),
+        3px 3px 5px rgba(0, 0, 0, 0.7);
+    letter-spacing: 3px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+/* КОНТЕЙНЕР ДЛЯ КНОПОК В ЦЕНТРЕ СНИЗУ */
+.bottom-buttons {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    z-index: 10;
+}
+
+/* Кнопка СТАРТ и ВЫХОД (в центре снизу) */
+.btn-start, .btn-exit {
+    position: relative;
+    min-width: 180px;
+}
+
+.btn-start {
+    border-color: #33ff55;
+    color: #33ff55;
+}
+.btn-start:hover {
+    background: rgba(51, 255, 85, 0.3);
+}
+
+.btn-exit {
+    border-color: #ff4444;
+    color: #ff4444;
+}
+.btn-exit:hover {
+    background: rgba(255, 68, 68, 0.3);
+}
+
+/* Нижняя панель */
+.footer-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 45px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    color: #ccc;
+    font-size: 16px;
+    z-index: 10;
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- МОДАЛЬНЫЕ ОКНА (ВСПЛЫВАШКИ) --- */
+
+/* Темный полупрозрачный фон поверх всей игры */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Поверх всех кнопок */
+    opacity: 1;
+    transition: opacity 0.2s ease; /* Плавное появление */
+}
+
+/* Класс, который прячет окно */
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none; 
+}
+
+/* Сам белый прямоугольник справки */
+.modal-content {
+    position: relative;
+    width: 600px;
+    max-width: 90%;
+    max-height: 80vh;               /* ограничение по высоте */
+    overflow-y: auto;               /* прокрутка при переполнении */
+    background-color: #fff;
+    
+    /* фон "тетрадка в клетку" */
+    background-image: 
+        linear-gradient(rgba(255, 100, 100, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 100, 100, 0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+    
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    color: #222;
+    font-family: Arial, sans-serif;
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    background: #fff; /* Фон под текстом, чтоб сетка не мешала читать */
+    display: inline-block;
+    padding: 0 10px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-text p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.8); 
+    padding: 5px;
+}
+
+.modal-target-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+}
+
+.modal-target-info img {
+    height: 60px; /* Размер подсказки-картинки */
+}
+
+/* Красная кнопка ПОНЯЛ */
+.btn-modal-close {
+    display: block;
+    margin: 0 0 0 auto; /* Прижать вправо */
+    background-color: #f05a5b; 
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-modal-close:hover {
+    background-color: #d04849;
+}
+
+
+/* Стили для текста в справке (чтобы не сломалось) */
+.modal-text p {
+    font-size: 16px; line-height: 1.5; margin-bottom: 15px; background: rgba(255, 255, 255, 0.9); padding: 5px;
+}
+.modal-target-info {
+    display: flex; align-items: center; gap: 15px; margin-bottom: 20px; background: rgba(255, 255, 255, 0.9); padding: 5px;
+}
+.modal-target-info img { height: 60px; }
+
+/* --- ПЕРЕКЛЮЧАТЕЛИ (ТОГГЛЫ) С ЗЕЛЕНЫМ/КРАСНЫМ --- */
+
+.custom-toggle {
+    display: flex;
+    width: 70px;
+    height: 35px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    border-radius: 35px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.toggle-green, .toggle-red {
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.toggle-green {
+    background-color: #00cc44;
+}
+
+.toggle-red {
+    background-color: #ff3333;
+}
+
+/* Состояние "ВКЛЮЧЕНО" — зеленая сторона активна, красная спрятана */
+.custom-toggle.toggle-green-active .toggle-green {
+    flex: 2;
+    background-color: #00ff55;
+}
+
+.custom-toggle.toggle-green-active .toggle-red {
+    flex: 0;
+}
+
+/* Состояние "ВЫКЛЮЧЕНО" — красная сторона активна, зеленая спрятана */
+.custom-toggle.toggle-red-active .toggle-green {
+    flex: 0;
+}
+
+.custom-toggle.toggle-red-active .toggle-red {
+    flex: 2;
+    background-color: #ff5555;
+}
+
+/* Эффект при наведении на переключатель */
+.custom-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* --- ПОЛЗУНОК СЛОЖНОСТИ --- */
+.difficulty-bar {
+    width: 200px;
+    height: 40px;
+    background-color: #ffcc00;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    border-radius: 20px;
+    transition: background-color 0.2s;
+}
+
+.difficulty-bar:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.difficulty-text {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    background: rgba(255,255,255,0.9);
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 40px;
+}
+
+.setting-label {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+.settings-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.settings-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 25px;
+    border-radius: 20px;
+}
+
+/* Дополнительные настройки */
+.advanced-settings {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+.advanced-settings .setting-row {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 40px;
+    margin-bottom: 15px;
+}
+
+.number-input {
+    width: 80px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    background: white;
+}
+
+.advanced-settings .setting-row span {
+    font-size: 14px;
+    color: #555;
+}
+
